@@ -4,7 +4,7 @@
     "type": "library",
     "description": "This is AbriCoder project WinWord library",
     "keywords": ["abricoder" , "winword"],
-    "homepage": "https://gitlab.com/mrtzaj/abricoder-core",
+    "homepage": "https://gitlab.com/mrtzaj/winword",
     "authors": [
         {
             "name": "Morteza Jamali",
