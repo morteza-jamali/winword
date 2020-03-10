@@ -1,0 +1,26 @@
+{
+    "name": "abricoder/winword",
+    "version": "1.0.0",
+    "type": "library",
+    "description": "This is AbriCoder project WinWord library",
+    "keywords": ["abricoder" , "winword"],
+    "homepage": "https://gitlab.com/mrtzaj/abricoder-core",
+    "authors": [
+        {
+            "name": "Morteza Jamali",
+            "email": "mortezajamali4241@gmail.com",
+            "homepage": "https://abricoder.ir",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WinWord\\": ""
+        }
+    } ,
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
