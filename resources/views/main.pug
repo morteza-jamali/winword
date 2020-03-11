@@ -2,9 +2,12 @@
 .container-fluid.p-0.h-100(ng-app="pluginApp" ng-controller="pluginCtrl")
     - $desktop_wallpaper = View::getImage('windows.jpg')
     .desktop_layer.w-100.h-100(style=['background-image' => "url($desktop_wallpaper)"])
-        h1.m-0 This is for test
+
     div.fg-white(data-role="appbar" data-expand-point="md")
         ul.app-bar-menu
             li: a(href="#!"): span.mif-windows.mif-lg
             li: a(href="#!"): span.mif-search.mif-lg
+            each $app in $apps
+                - $icon = View::getImage($app['icon'])
+                li: a(href="#!{$app['slug']}"): img(src="$icon")
             li.ml-auto: a(href="#!" ng-click="fullscreen()"): span.mif-exit.mif-lg

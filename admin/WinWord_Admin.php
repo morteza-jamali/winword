@@ -1,6 +1,7 @@
 <?php
     namespace WinWord\Admin;
 
+    use WinWord\App\App;
     use WinWordCore\App\Config;
     use WinWordCore\App\View;
 
@@ -45,7 +46,9 @@
         }
 
         public function displayView() {
-            View::display('main');
+            View::display('main' , [
+                'apps' => (new App())->apps
+            ]);
         }
 
         public function add_menu() {
