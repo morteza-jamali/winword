@@ -16,19 +16,14 @@
         public function register_styles() {
             global $hook_suffix;
 
-            $styles = [
-                'metro' ,
-                'plugin'
-            ];
-
             if(in_array($hook_suffix , array(
-                'toplevel_page_abricoder'
+                'toplevel_page_winword'
             ))) {
-                foreach($styles as $style) {
-                    wp_register_style($this->plugin_name . '-' . $style ,
-                        Config::getDefault("styles.{$style}") ,
+                foreach(Config::getDefault('styles') as $name => $src) {
+                    wp_register_style($this->plugin_name . '-' . $name ,
+                        $src ,
                         array(), $this->version, 'all');
-                    wp_enqueue_style($this->plugin_name . '-' . $style);
+                    wp_enqueue_style($this->plugin_name . '-' . $name);
                 }
             }
         }
@@ -36,27 +31,21 @@
         public function register_scripts() {
             global $hook_suffix;
 
-            $scripts = [
-                'metro' ,
-                'angular' ,
-                'plugin'
-            ];
-
             if(in_array($hook_suffix , array(
-                'toplevel_page_abricoder'
+                'toplevel_page_winword'
             ))) {
-                foreach($scripts as $script) {
-                    wp_register_script($this->plugin_name . '-' . $script,
-                        Config::getDefault("scripts.{$script}") ,
+                foreach(Config::getDefault('scripts') as $name => $src) {
+                    wp_register_script($this->plugin_name . '-' . $name,
+                        $src ,
                         array('jquery'),
                         $this->version, true);
-                    wp_enqueue_script($this->plugin_name . '-' . $script);
+                    wp_enqueue_script($this->plugin_name . '-' . $name);
                 }
             }
         }
 
         public function displayView() {
-            View::display('plugin/main');
+            View::display('main');
         }
 
         public function add_menu() {

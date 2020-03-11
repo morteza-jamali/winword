@@ -19,16 +19,16 @@
 
     require_once __DIR__ . '/vendor/autoload.php';
 
-    use AbriCoderPlugin\Includes\WinWord_Activator;
-    use AbriCoderPlugin\Includes\WinWord_Deactivator;
-    use AbriCoderPlugin\Includes\WinWord;
-    use AbriCoderCore\Core\Config;
+    use WinWord\Includes\WinWord_Activator;
+    use WinWord\Includes\WinWord_Deactivator;
+    use WinWord\Includes\WinWord;
+    use WinWordCore\App\Config;
 
     if (!defined( 'WPINC')) {
         die;
     }
 
-    define('ABRICODER_VERSION', Config::get('version'));
+    define('WinWord_VERSION', Config::get('version'));
 
     register_activation_hook( __FILE__, function() {
         WinWord_Activator::activate();
@@ -37,8 +37,5 @@
         WinWord_Deactivator::deactivate();
     });
 
-    /**
-     * @since    1.0.0
-     */
     (new WinWord())->run();
 ?>
