@@ -13,10 +13,7 @@
                     'views' => dirname(__DIR__) . '/resources/views/'
                 ] ,
                 'scripts' => [
-                    'angular' => plugin_dir_url(__DIR__) . 'node_modules/angular/angular.min.js' ,
-                    'validate' => plugin_dir_url(__DIR__) . 'node_modules/validate.js/validate.min.js' ,
-                    'metro' => plugin_dir_url(__DIR__) . 'node_modules/metro4/build/js/metro.min.js' ,
-                    'plugin' => plugin_dir_url(__DIR__) . 'public/js/plugin.js'
+                    'app' => plugin_dir_url(__DIR__) . 'public/js/app.js'
                 ] ,
                 'styles' => [
                     'fontawesome' => plugin_dir_url(__DIR__) . 'node_modules/@fortawesome/fontawesome-free/css/all.min.css' ,

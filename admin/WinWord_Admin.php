@@ -35,13 +35,11 @@
             if(in_array($hook_suffix , array(
                 'toplevel_page_winword'
             ))) {
-                foreach(Config::getDefault('scripts') as $name => $src) {
-                    wp_register_script($this->plugin_name . '-' . $name,
-                        $src ,
-                        array('jquery'),
-                        $this->version, true);
-                    wp_enqueue_script($this->plugin_name . '-' . $name);
-                }
+                wp_register_script($this->plugin_name . '-app',
+                    Config::getDefault('scripts.app') ,
+                    array('jquery'),
+                    $this->version, true);
+                wp_enqueue_script($this->plugin_name . '-app');
             }
         }
 

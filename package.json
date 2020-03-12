@@ -1,0 +1,33 @@
+{
+  "name": "winword",
+  "version": "1.0.0",
+  "description": "This is winword project",
+  "main": "index.js",
+  "dependencies": {
+    "angular": "^1.7.9",
+    "metro4": "^4.3.5",
+    "validate.js": "^0.13.1"
+  },
+  "devDependencies": {
+    "laravel-mix": "^5.0.1",
+    "resolve-url-loader": "^3.1.0",
+    "sass": "^1.26.2",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "scripts": {
+    "compile": "node_modules/.bin/webpack --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch" : "npm run compile -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/mrtzaj/winword.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/mrtzaj/winword/issues"
+  },
+  "homepage": "https://gitlab.com/mrtzaj/winword#readme"
+}
