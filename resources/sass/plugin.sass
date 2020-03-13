@@ -15,7 +15,6 @@ html.windows-mode
     top: auto !important
     bottom: 0 !important
     background-color: #1e1f26
-    position: relative !important
   .app-bar-expand
     .app-bar-menu
       width: 100% !important
@@ -23,6 +22,7 @@ html.windows-mode
     background-position: center
     background-size: cover
     background-repeat: no-repeat
+    height: calc(100% - 53px)
   .app-bar-menu
     li
       a
@@ -34,3 +34,5 @@ html.windows-mode
     bottom: 0
     left: 0
     background-color: rgba(30, 31, 38 , 0.9)
+  a:focus
+    box-shadow: none !important
