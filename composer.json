@@ -27,6 +27,9 @@
             "WinWord\\": ""
         }
     } ,
+    "scripts": {
+        "create-controller" : "WinWordCore\\cli\\Controller::create"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }

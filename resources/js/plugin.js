@@ -1,8 +1,43 @@
+import Plugin from "./app";
+import * as screenfull from '../../node_modules/screenfull/dist/screenfull.js';
+
 var Plugin_First = {
+    name : 'wptest' ,
     selectors : {
-        app : '.app-bar-menu a.app'
+        app : '.app-bar-menu a.app' ,
+        app_content : '.window .window-content .app-content'
     }
 };
+
+var WinWord = {
+    getWebsiteUrl : function () {
+        if(location.host === 'localhost') {
+            return (location.origin + '/' + Plugin_First.name).toLowerCase();
+        } else {
+            return location.origin;
+        }
+    } ,
+    app : Plugin
+};
+
+WinWord.app.controller('pluginCtrl' , function ($scope) {
+    location.hash = '#!/';
+    Metro.storage.setKey('WinWord_Storage');
+    Metro.storage.setItem('applications' , {});
+
+    $scope.fullscreen = function () {
+        screenfull.toggle();
+    };
+});
+
+WinWord.app.service('View', function($templateRequest , $compile) {
+    this.display = function (view , scope , slug) {
+        $templateRequest(WinWord.getWebsiteUrl() + "/wp-content/plugins/winword/resources/views/" + view)
+            .then(function(html){
+                $('.window .window-content .app-content[data-slug="' + slug + '"]').append($compile(html)(scope));
+            });
+    };
+});
 
 $(function () {
     var getApplications = function() {
@@ -22,6 +57,7 @@ $(function () {
     };
 
     var removeApplication = function(app) {
+        location.hash = '#!/';
         $(Plugin_First.selectors.app).parent().removeClass('bd-cyan');
         var _applications = getApplications();
         delete _applications[app];
@@ -52,3 +88,5 @@ $(function () {
         );
     });
 });
+
+export default WinWord

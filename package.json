@@ -8,6 +8,7 @@
     "angular-route": "^1.6.9",
     "animejs": "^3.1.0",
     "metro4": "^4.3.5",
+    "screenfull": "^5.0.2",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
@@ -18,8 +19,8 @@
     "vue-template-compiler": "^2.6.11"
   },
   "scripts": {
-    "compile": "node_modules/.bin/webpack --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "npm run compile -- --watch"
+    "webpackCompile": "node_modules/.bin/webpack --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "webpackWatch": "npm run webpackCompile -- --watch"
   },
   "repository": {
     "type": "git",

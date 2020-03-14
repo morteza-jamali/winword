@@ -13,8 +13,7 @@
                     'views' => dirname(__DIR__) . '/resources/views/'
                 ] ,
                 'scripts' => [
-                    'app' => plugin_dir_url(__DIR__) . 'public/js/app.js' ,
-                    'ngRoute' => plugin_dir_url(__DIR__) . 'node_modules/angular-route/angular-route.min.js'
+                    'app' => plugin_dir_url(__DIR__) . 'public/js/app.js'
                 ] ,
                 'styles' => [
                     'fontawesome' => plugin_dir_url(__DIR__) . 'node_modules/@fortawesome/fontawesome-free/css/all.min.css' ,

@@ -712,6 +712,201 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/screenfull/dist/screenfull.js":
+/*!****************************************************!*\
+  !*** ./node_modules/screenfull/dist/screenfull.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+* screenfull
+* v5.0.2 - 2020-02-13
+* (c) Sindre Sorhus; MIT License
+*/
+(function () {
+	'use strict';
+
+	var document = typeof window !== 'undefined' && typeof window.document !== 'undefined' ? window.document : {};
+	var isCommonjs =  true && module.exports;
+
+	var fn = (function () {
+		var val;
+
+		var fnMap = [
+			[
+				'requestFullscreen',
+				'exitFullscreen',
+				'fullscreenElement',
+				'fullscreenEnabled',
+				'fullscreenchange',
+				'fullscreenerror'
+			],
+			// New WebKit
+			[
+				'webkitRequestFullscreen',
+				'webkitExitFullscreen',
+				'webkitFullscreenElement',
+				'webkitFullscreenEnabled',
+				'webkitfullscreenchange',
+				'webkitfullscreenerror'
+
+			],
+			// Old WebKit
+			[
+				'webkitRequestFullScreen',
+				'webkitCancelFullScreen',
+				'webkitCurrentFullScreenElement',
+				'webkitCancelFullScreen',
+				'webkitfullscreenchange',
+				'webkitfullscreenerror'
+
+			],
+			[
+				'mozRequestFullScreen',
+				'mozCancelFullScreen',
+				'mozFullScreenElement',
+				'mozFullScreenEnabled',
+				'mozfullscreenchange',
+				'mozfullscreenerror'
+			],
+			[
+				'msRequestFullscreen',
+				'msExitFullscreen',
+				'msFullscreenElement',
+				'msFullscreenEnabled',
+				'MSFullscreenChange',
+				'MSFullscreenError'
+			]
+		];
+
+		var i = 0;
+		var l = fnMap.length;
+		var ret = {};
+
+		for (; i < l; i++) {
+			val = fnMap[i];
+			if (val && val[1] in document) {
+				for (i = 0; i < val.length; i++) {
+					ret[fnMap[0][i]] = val[i];
+				}
+				return ret;
+			}
+		}
+
+		return false;
+	})();
+
+	var eventNameMap = {
+		change: fn.fullscreenchange,
+		error: fn.fullscreenerror
+	};
+
+	var screenfull = {
+		request: function (element) {
+			return new Promise(function (resolve, reject) {
+				var onFullScreenEntered = function () {
+					this.off('change', onFullScreenEntered);
+					resolve();
+				}.bind(this);
+
+				this.on('change', onFullScreenEntered);
+
+				element = element || document.documentElement;
+
+				var returnPromise = element[fn.requestFullscreen]();
+
+				if (returnPromise instanceof Promise) {
+					returnPromise.then(onFullScreenEntered).catch(reject);
+				}
+			}.bind(this));
+		},
+		exit: function () {
+			return new Promise(function (resolve, reject) {
+				if (!this.isFullscreen) {
+					resolve();
+					return;
+				}
+
+				var onFullScreenExit = function () {
+					this.off('change', onFullScreenExit);
+					resolve();
+				}.bind(this);
+
+				this.on('change', onFullScreenExit);
+
+				var returnPromise = document[fn.exitFullscreen]();
+
+				if (returnPromise instanceof Promise) {
+					returnPromise.then(onFullScreenExit).catch(reject);
+				}
+			}.bind(this));
+		},
+		toggle: function (element) {
+			return this.isFullscreen ? this.exit() : this.request(element);
+		},
+		onchange: function (callback) {
+			this.on('change', callback);
+		},
+		onerror: function (callback) {
+			this.on('error', callback);
+		},
+		on: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.addEventListener(eventName, callback, false);
+			}
+		},
+		off: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.removeEventListener(eventName, callback, false);
+			}
+		},
+		raw: fn
+	};
+
+	if (!fn) {
+		if (isCommonjs) {
+			module.exports = {isEnabled: false};
+		} else {
+			window.screenfull = {isEnabled: false};
+		}
+
+		return;
+	}
+
+	Object.defineProperties(screenfull, {
+		isFullscreen: {
+			get: function () {
+				return Boolean(document[fn.fullscreenElement]);
+			}
+		},
+		element: {
+			enumerable: true,
+			get: function () {
+				return document[fn.fullscreenElement];
+			}
+		},
+		isEnabled: {
+			enumerable: true,
+			get: function () {
+				// Coerce to boolean in case of old WebKit
+				return Boolean(document[fn.fullscreenEnabled]);
+			}
+		}
+	});
+
+	if (isCommonjs) {
+		module.exports = screenfull;
+	} else {
+		window.screenfull = screenfull;
+	}
+})();
+
+
+/***/ }),
+
 /***/ "./node_modules/setimmediate/setImmediate.js":
 /*!***************************************************!*\
   !*** ./node_modules/setimmediate/setImmediate.js ***!
@@ -1096,14 +1291,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var Plugin = angular.module('pluginApp', ['ngRoute']);
 Plugin.config(_routes__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Plugin.controller('pluginCtrl', function ($scope) {
-  Metro.storage.setKey('WinWord_Storage');
-  Metro.storage.setItem('applications', {});
-
-  $scope.fullscreen = function () {
-    $('html').removeClass('windows-mode');
-  };
-});
 /* harmony default export */ __webpack_exports__["default"] = (Plugin);
 
 /***/ }),
@@ -1112,14 +1299,49 @@ Plugin.controller('pluginCtrl', function ($scope) {
 /*!********************************!*\
   !*** ./resources/js/plugin.js ***!
   \********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app */ "./resources/js/app.js");
+/* harmony import */ var _node_modules_screenfull_dist_screenfull_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/screenfull/dist/screenfull.js */ "./node_modules/screenfull/dist/screenfull.js");
+/* harmony import */ var _node_modules_screenfull_dist_screenfull_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_screenfull_dist_screenfull_js__WEBPACK_IMPORTED_MODULE_1__);
+
 
 var Plugin_First = {
+  name: 'wptest',
   selectors: {
-    app: '.app-bar-menu a.app'
+    app: '.app-bar-menu a.app',
+    app_content: '.window .window-content .app-content'
   }
 };
+var WinWord = {
+  getWebsiteUrl: function getWebsiteUrl() {
+    if (location.host === 'localhost') {
+      return (location.origin + '/' + Plugin_First.name).toLowerCase();
+    } else {
+      return location.origin;
+    }
+  },
+  app: _app__WEBPACK_IMPORTED_MODULE_0__["default"]
+};
+WinWord.app.controller('pluginCtrl', function ($scope) {
+  location.hash = '#!/';
+  Metro.storage.setKey('WinWord_Storage');
+  Metro.storage.setItem('applications', {});
+
+  $scope.fullscreen = function () {
+    _node_modules_screenfull_dist_screenfull_js__WEBPACK_IMPORTED_MODULE_1__["toggle"]();
+  };
+});
+WinWord.app.service('View', function ($templateRequest, $compile) {
+  this.display = function (view, scope, slug) {
+    $templateRequest(WinWord.getWebsiteUrl() + "/wp-content/plugins/winword/resources/views/" + view).then(function (html) {
+      $('.window .window-content .app-content[data-slug="' + slug + '"]').append($compile(html)(scope));
+    });
+  };
+});
 $(function () {
   var getApplications = function getApplications() {
     return Metro.storage.getItem('applications');
@@ -1141,6 +1363,7 @@ $(function () {
   };
 
   var removeApplication = function removeApplication(app) {
+    location.hash = '#!/';
     $(Plugin_First.selectors.app).parent().removeClass('bd-cyan');
 
     var _applications = getApplications();
@@ -1162,6 +1385,7 @@ $(function () {
     removeApplication($(this).parents('.window').find('.window-content .app-content').attr('data-slug'));
   });
 });
+/* harmony default export */ __webpack_exports__["default"] = (WinWord);
 
 /***/ }),
 
@@ -1185,19 +1409,19 @@ var Routes = function Routes($routeProvider) {
 
 /***/ }),
 
-/***/ "./resources/js/winword-email.js":
-/*!***************************************!*\
-  !*** ./resources/js/winword-email.js ***!
-  \***************************************/
+/***/ "./resources/js/winwordemail.js":
+/*!**************************************!*\
+  !*** ./resources/js/winwordemail.js ***!
+  \**************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app */ "./resources/js/app.js");
+/* harmony import */ var _plugin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./plugin */ "./resources/js/plugin.js");
 
-_app__WEBPACK_IMPORTED_MODULE_0__["default"].controller('winwordemailCtrl', function () {
-  console.log('This is email controller !');
+_plugin__WEBPACK_IMPORTED_MODULE_0__["default"].app.controller('winwordemailCtrl', function ($scope, View) {
+  View.display('email.html', $scope, 'winwordemail');
 });
 
 /***/ }),
@@ -1214,12 +1438,13 @@ _app__WEBPACK_IMPORTED_MODULE_0__["default"].controller('winwordemailCtrl', func
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** multi ./node_modules/angular/angular.min.js ./node_modules/angular-route/angular-route.min.js ./node_modules/animejs/lib/anime.min.js ./node_modules/validate.js/validate.min.js ./node_modules/metro4/build/js/metro.min.js ./resources/js/routes.js ./resources/js/app.js ./resources/js/plugin.js ./resources/js/winword-email.js ./resources/sass/plugin.sass ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./node_modules/screenfull/dist/screenfull.js ./node_modules/angular/angular.min.js ./node_modules/angular-route/angular-route.min.js ./node_modules/animejs/lib/anime.min.js ./node_modules/validate.js/validate.min.js ./node_modules/metro4/build/js/metro.min.js ./resources/js/routes.js ./resources/js/app.js ./resources/js/plugin.js ./resources/js/winwordemail.js ./resources/sass/plugin.sass ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\node_modules\screenfull\dist\screenfull.js */"./node_modules/screenfull/dist/screenfull.js");
 __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\node_modules\angular\angular.min.js */"./node_modules/angular/angular.min.js");
 __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\node_modules\angular-route\angular-route.min.js */"./node_modules/angular-route/angular-route.min.js");
 __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\node_modules\animejs\lib\anime.min.js */"./node_modules/animejs/lib/anime.min.js");
@@ -1228,7 +1453,7 @@ __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\node_mod
 __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\resources\js\routes.js */"./resources/js/routes.js");
 __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\resources\js\app.js */"./resources/js/app.js");
 __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\resources\js\plugin.js */"./resources/js/plugin.js");
-__webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\resources\js\winword-email.js */"./resources/js/winword-email.js");
+__webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\resources\js\winwordemail.js */"./resources/js/winwordemail.js");
 module.exports = __webpack_require__(/*! C:\wamp64\www\wptest\wp-content\plugins\winword\resources\sass\plugin.sass */"./resources/sass/plugin.sass");
 
 

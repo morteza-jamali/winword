@@ -5,10 +5,11 @@
         .ng-view.d-none
     div.fg-white(data-role="appbar" data-expand-point="md")
         ul.app-bar-menu
-            li: a.c-default: span.mif-windows.mif-lg
-            li: a.c-default: span.mif-search.mif-lg
+            li: a.c-default: span.mif-windows.mif-2x
+            li: a.c-default: span.mif-search.mif-2x
             each $app in $apps
                 - $icon = View::getImage($app['icon'])
                 li.border-bottom.border-size-5: a.app.c-default(href="#!{$app['slug']}" data-title="{$app['name']}" data-slug="{$app['slug']}")
                     img(src="$icon")
-            li.ml-auto: a.c-default(ng-click="fullscreen()"): span.mif-exit.mif-lg
+            li.ml-auto: a.c-default(ng-click="fullscreen()"): span.mif-display.mif-2x
+            li: a.c-default(onclick="$('html').removeClass('windows-mode')"): span.mif-exit.mif-2x
